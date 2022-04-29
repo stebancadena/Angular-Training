@@ -1,13 +1,10 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ProductListComponent } from './product-list.component';
 import { ProductDetailComponent } from './product-detail/product-detail.component';
-import { ConvertToSpacesPipe } from '../shared/convert-to-spaces.pipe';
-import { StarComponent } from '../shared/star.component';
-import { FormsModule } from '@angular/forms';
+import { ConvertToSpacesPipe } from '../core/pipes/convert-to-spaces.pipe';
 import { RouterModule } from '@angular/router';
-import { ProductDetailGuard } from './product-detail.guard';
+import { ProductDetailGuard } from '../core/guards/product-detail.guard';
 import { SharedModule } from '../shared/shared.module';
+import { ProductListComponent } from './product-list/product-list.component';
 
 
 
@@ -27,6 +24,7 @@ import { SharedModule } from '../shared/shared.module';
       },
     ]),
     SharedModule
-  ]
+  ],
+  bootstrap: []
 })
 export class ProductModule { }
