@@ -1,4 +1,6 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
+import { AuthService } from "./core/services/auth.service";
 
 @Component({
   selector: 'pm-root',
@@ -7,4 +9,23 @@ import { Component } from "@angular/core";
 })
 export class AppComponent {
   pageTitle: string = 'Acme Product Management';
+  
+  constructor( private authService: AuthService,
+    private router: Router) {}
+
+  get isLoggedIn(): boolean {
+    return this.authService.isLoggedIn;
+  }
+
+  get userName(): string {
+    if (this.authService.currentUser) {
+      return this.authService.currentUser.userName;
+    }
+    return '';
+  }
+
+  logOut(): void {
+    this.authService.logout();
+    this.router.navigateByUrl('/welcome');
+  }
 }
