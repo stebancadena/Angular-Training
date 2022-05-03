@@ -30,8 +30,4 @@ export class ProductDetailComponent implements OnInit {
       error: err => this.errorMessage = err
     });
   }
-
-  onBack(): void {
-    this.router.navigate(['/products']);
-  }
 }

@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
+import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
 import { IProduct } from "../../core/models/product";
 import { ProductService } from "../../core/services/product.service";
@@ -27,7 +28,8 @@ export class ProductListComponent implements OnInit, OnDestroy{
         this.filteredProducts = this.performFilter(value);
     }
 
-    constructor(private productService: ProductService){}
+    constructor(private productService: ProductService,
+                private route: ActivatedRoute){}
 
     filteredProducts: IProduct[] = [];
     products: IProduct[] = [];
@@ -37,6 +39,9 @@ export class ProductListComponent implements OnInit, OnDestroy{
     }
 
     ngOnInit(): void {
+        this.listFilter = this.route.snapshot.queryParamMap.get('filterBy') || '';
+        this.showImage = this.route.snapshot.queryParamMap.get('showImage') === 'true';
+
         this.sub = this.productService.getProducts().subscribe({
             next: products => {
               this.products = products;
