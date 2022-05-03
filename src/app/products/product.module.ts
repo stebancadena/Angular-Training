@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { ProductDetailGuard } from '../core/guards/product-detail.guard';
 import { SharedModule } from '../shared/shared.module';
 import { ProductListComponent } from './product-list/product-list.component';
+import { ProductEditComponent } from './product-edit/product-edit.component';
 
 
 
@@ -13,6 +14,7 @@ import { ProductListComponent } from './product-list/product-list.component';
     ProductListComponent,
     ProductDetailComponent,
     ConvertToSpacesPipe,
+    ProductEditComponent,
   ],
   imports: [
     RouterModule.forChild([
@@ -21,6 +23,11 @@ import { ProductListComponent } from './product-list/product-list.component';
         path: 'products/:id',
         canActivate: [ProductDetailGuard], 
         component: ProductDetailComponent
+      },
+      {
+        path: 'products/:id/edit',
+        canActivate: [ProductDetailGuard], 
+        component: ProductEditComponent
       },
     ]),
     SharedModule
