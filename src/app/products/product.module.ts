@@ -6,6 +6,7 @@ import { ProductDetailGuard } from '../core/guards/product-detail.guard';
 import { SharedModule } from '../shared/shared.module';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductEditComponent } from './product-edit/product-edit.component';
+import { AuthGuard } from '../core/guards/auth.guard';
 
 
 
@@ -26,7 +27,7 @@ import { ProductEditComponent } from './product-edit/product-edit.component';
       },
       {
         path: 'products/:id/edit',
-        canActivate: [ProductDetailGuard], 
+        canActivate: [AuthGuard], 
         component: ProductEditComponent
       },
     ]),
