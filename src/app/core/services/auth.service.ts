@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Url } from 'url';
 import { User } from '../models/user';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  currentUser: User | undefined;
+  currentUser: User;
+  redirectUrl: string;
 
   constructor() { }
 
