@@ -8,6 +8,8 @@ import { ProductModule } from './products/product.module';
 import { AppRoutingModule } from './app-routing.module';
 import { CartComponent } from './cart/cart.component';
 import { CartModule } from './cart/cart.module';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { DataService } from './data.service';
 
 @NgModule({
   declarations: [
@@ -18,6 +20,7 @@ import { CartModule } from './cart/cart.module';
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpClientInMemoryWebApiModule.forRoot(DataService),
     ProductModule,
     CartModule,
     AppRoutingModule
