@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
+import { CartService } from "src/app/core/services/cart.service";
 import { IProduct } from "../../core/models/product";
 import { ProductService } from "../../core/services/product.service";
 
@@ -29,7 +30,8 @@ export class ProductListComponent implements OnInit, OnDestroy{
     }
 
     constructor(private productService: ProductService,
-                private route: ActivatedRoute){}
+                private route: ActivatedRoute,
+                private cartService: CartService){}
 
     filteredProducts: IProduct[] = [];
     products: IProduct[] = [];
@@ -57,6 +59,10 @@ export class ProductListComponent implements OnInit, OnDestroy{
 
     onRatingClicked(message: string): void {
         this.pageTitle = 'Product List: ' + message;
+    }
+
+    addToCart(product): void {
+        this.cartService.addToCart(product,1);
     }
 
     performFilter(filterBy: string): IProduct[] {

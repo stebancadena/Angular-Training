@@ -19,7 +19,26 @@
                         <th>Subtotal</th>
                     </tr>
                 </thead>
-            
+                <tbody>
+                    <tr *ngFor="let product of products">
+                        <td>
+                            <img *ngIf="showImage"
+                                [src]="product.imageUrl"
+                                [title]="product.productName"
+                                [style.width.px]="imageWidth" 
+                                [style.margin.px]="imageMargin"
+                            >
+                        </td>
+                        <td>
+                            <a [routerLink]="['/products', product.productId]">
+                               {{ product.productName }}
+                            </a>
+                        </td>
+                        <td>1</td>
+                        <td>{{product.price | currency:'USD':'symbol':'1.2-2'}}</td>
+                        <td>Subtotal</td>
+                    </tr>
+                </tbody>
             </table>
         </div>
     </div>

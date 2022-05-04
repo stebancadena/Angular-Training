@@ -60,7 +60,7 @@
           Edit
         </button>
         <button class="btn btn-outline-primary"
-                [routerLink]="['cart']">
+                (click)="addToCart(product.productId)">
           Add to cart
         </button>
       </div>
