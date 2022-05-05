@@ -7,6 +7,7 @@ import { SharedModule } from '../shared/shared.module';
 import { ProductListComponent } from './product-list/product-list.component';
 import { ProductEditComponent } from './product-edit/product-edit.component';
 import { AuthGuard } from '../core/guards/auth.guard';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -31,7 +32,8 @@ import { AuthGuard } from '../core/guards/auth.guard';
         component: ProductEditComponent
       },
     ]),
-    SharedModule
+    SharedModule,
+    ReactiveFormsModule
   ],
   bootstrap: []
 })

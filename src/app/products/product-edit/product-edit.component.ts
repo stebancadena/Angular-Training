@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IProduct } from 'src/app/core/models/product';
 import { ProductService } from 'src/app/core/services/product.service';
@@ -12,12 +13,15 @@ export class ProductEditComponent implements OnInit {
   pageTitle = 'Product Edit'
   errorMessage?: string;
 
+  editForm: FormGroup;
+
   product: IProduct;
 
   constructor(private productService: ProductService,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
+    
     const id = Number(this.route.snapshot.paramMap.get('id'));
     if (id) {
       this.getProduct(id);
@@ -39,8 +43,20 @@ export class ProductEditComponent implements OnInit {
     } else {
       if (this.product.productId === 0) {
         this.pageTitle = 'Add Product';
+        this.editForm = new FormGroup({
+          productName: new FormControl(''),
+          productCode: new FormControl(''),
+          price: new FormControl(''),
+          description: new FormControl(''),
+        })
       } else {
         this.pageTitle = `Edit Product: ${this.product.productName}`;
+        this.editForm = new FormGroup({
+          productName: new FormControl(this.product.productName),
+          productCode: new FormControl(this.product.productCode),
+          price: new FormControl(this.product.price),
+          description: new FormControl(this.product.description),
+        })
       }
     }
   }
@@ -82,6 +98,14 @@ export class ProductEditComponent implements OnInit {
     if (message) {
       alert(message);
     }
+  }
+
+  onSubmit(form: FormGroup) {
+    console.log('Valid?', form.valid); // true or false
+    console.log('Name', form.value.productName);
+    console.log('Code', form.value.productCode);
+    console.log('Price', form.value.price);
+    console.log('Description', form.value.description);
   }
 
 }
