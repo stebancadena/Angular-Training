@@ -20,7 +20,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of products">
+                    <tr *ngFor="let product of products; let i = index">
                         <td>
                             <img *ngIf="showImage"
                                 [src]="product.imageUrl"
@@ -34,9 +34,28 @@
                                {{ product.productName }}
                             </a>
                         </td>
-                        <td>1</td>
+                        <td>{{quantities[i]}}</td>
                         <td>{{product.price | currency:'USD':'symbol':'1.2-2'}}</td>
-                        <td>Subtotal</td>
+                        <td>{{quantities[i] * product.price | currency:'USD':'symbol':'1.2-2'}}</td>
+                        
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm"
+                                    (click)="onSubstract(i)">
+                              -
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm"
+                                    (click)="onAdd(i)">
+                              +
+                            </button>
+                        </td>
+                        <td>
+                            <button class="btn btn-outline-primary btn-sm"
+                                    (click)="onAdd(i)">
+                              Delete
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>

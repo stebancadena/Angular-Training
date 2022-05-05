@@ -12,6 +12,7 @@ export class CartComponent implements OnInit {
   pageTitle:string = 'Cart';
 
   products: IProduct[] = [];
+  quantities: number[] = [];
   
   imageWidth: number = 50;
   imageMargin: number = 2;
@@ -25,6 +26,7 @@ export class CartComponent implements OnInit {
   ngOnInit(): void {
     this.cartService.getItems().map( item => {
         this.getProduct(item[0])
+        this.quantities.push(item[1])
       }
     )
   }
@@ -38,6 +40,24 @@ export class CartComponent implements OnInit {
 
   toggleImage(): void {
     this.showImage = !this.showImage;
+  }
+
+  onAdd(index: number): void {
+    this.quantities[index] += 1;
+  }
+
+  onSubstract(index: number): void {
+    let onMinus = this.quantities[index] - 1;
+    if(onMinus === 0){
+      this.onDelete(index)      
+    }else {
+      this.quantities[index] -= 1;
+    }
+  }
+
+  onDelete(index: number): void {
+    this.products.splice(index)
+    this.quantities.splice(index)
   }
 
 }

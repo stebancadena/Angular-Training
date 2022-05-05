@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IProduct } from 'src/app/core/models/product';
 import { ProductService } from 'src/app/core/services/product.service';
@@ -52,7 +52,7 @@ export class ProductEditComponent implements OnInit {
       } else {
         this.pageTitle = `Edit Product: ${this.product.productName}`;
         this.editForm = new FormGroup({
-          productName: new FormControl(this.product.productName),
+          productName: new FormControl(this.product.productName, [Validators.required]),
           productCode: new FormControl(this.product.productCode),
           price: new FormControl(this.product.price),
           description: new FormControl(this.product.description),
