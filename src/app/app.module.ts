@@ -10,12 +10,14 @@ import { CartComponent } from './cart/cart.component';
 import { CartModule } from './cart/cart.module';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { DataService } from './data.service';
+import { HighlightDirective } from './core/directives/highlight.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     WelcomeComponent,
-    CartComponent
+    CartComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
