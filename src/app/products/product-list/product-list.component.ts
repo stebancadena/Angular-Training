@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Subscription } from "rxjs";
+import { ApiService } from "src/app/core/services/api.service";
 import { CartService } from "src/app/core/services/cart.service";
 import { IProduct } from "../../core/models/product";
 import { ProductService } from "../../core/services/product.service";
@@ -19,6 +20,7 @@ export class ProductListComponent implements OnInit, OnDestroy{
 
     errorMessage = '';
     sub!: Subscription;
+    apiSub!: Subscription;
     
     private _listFilter: string = '';
     get listFilter(): string {
@@ -31,7 +33,8 @@ export class ProductListComponent implements OnInit, OnDestroy{
 
     constructor(private productService: ProductService,
                 private route: ActivatedRoute,
-                private cartService: CartService){}
+                private cartService: CartService,
+                private apiService: ApiService){}
 
     filteredProducts: IProduct[] = [];
     products: IProduct[] = [];
@@ -44,17 +47,20 @@ export class ProductListComponent implements OnInit, OnDestroy{
         this.listFilter = this.route.snapshot.queryParamMap.get('filterBy') || '';
         this.showImage = this.route.snapshot.queryParamMap.get('showImage') === 'true';
 
-        this.sub = this.productService.getProducts().subscribe({
-            next: products => {
-              this.products = products;
-              this.filteredProducts = this.products;
-            },
-            error: err => this.errorMessage = err
-          });
+        // this.sub = this.productService.getProducts().subscribe({
+        //     next: products => {
+        //       this.products = products;
+        //       this.filteredProducts = this.products;
+        //     },
+        //     error: err => this.errorMessage = err
+        //   });
+
+        this.apiSub = this.apiService.getProducts().subscribe();
     }
 
     ngOnDestroy(): void {
         this.sub.unsubscribe();
+        this.apiSub.unsubscribe();
     }
 
     onRatingClicked(message: string): void {

@@ -22,7 +22,7 @@ import { HighlightDirective } from './core/directives/highlight.directive';
   imports: [
     BrowserModule,
     HttpClientModule,
-    HttpClientInMemoryWebApiModule.forRoot(DataService),
+    //HttpClientInMemoryWebApiModule.forRoot(DataService),
     ProductModule,
     CartModule,
     AppRoutingModule
