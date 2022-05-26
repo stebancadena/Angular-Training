@@ -11,6 +11,8 @@ import { CartModule } from './cart/cart.module';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { DataService } from './data.service';
 import { HighlightDirective } from './core/directives/highlight.directive';
+import { NgxsModule } from '@ngxs/store';
+import { environment } from 'src/environments/environment';
 
 @NgModule({
   declarations: [
@@ -25,7 +27,8 @@ import { HighlightDirective } from './core/directives/highlight.directive';
     //HttpClientInMemoryWebApiModule.forRoot(DataService),
     ProductModule,
     CartModule,
-    AppRoutingModule
+    AppRoutingModule,
+    NgxsModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
