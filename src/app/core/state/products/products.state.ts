@@ -26,4 +26,11 @@ export class ProductsState {
             productsList: getState().productsList.filter(prod => prod.productId !== payload)
         });
     }
+
+    @Action(AddProduct)
+    load({ patchState }: StateContext<ProductsStateModel>, { payload }: LoadProducts) {
+        patchState({
+            productsList: payload
+        });
+      }
 }

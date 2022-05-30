@@ -12,5 +12,5 @@ export class RemoveProduct {
 
 export class LoadProducts {
     static readonly type = '[PRODUCTS] Load';
-    constructor() {};
+    constructor(public payload: IProduct[]) {};
 }

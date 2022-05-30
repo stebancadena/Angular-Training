@@ -1,22 +1,27 @@
 import { HttpClient, HttpErrorResponse, HttpHeaders } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { Select, Store } from "@ngxs/store";
 import { Observable, throwError } from "rxjs";
 import { catchError, map, tap } from 'rxjs/operators';
 import { IProduct } from "../models/product";
 import { IResponse } from "../models/responses";
+import { LoadProducts } from "../state/products/products.actions";
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
   private apiURL = 'https://localhost:5001/api/products';
+  @Select(state => state.productsList) products$: Observable<IProduct[]>;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient,
+              private store: Store) { }
 
   getProducts(): Observable<IResponse> {
     return this.http.get<IResponse>(this.apiURL)
       .pipe(
-        tap(data => console.log('Products getted: ' + JSON.stringify(data))),
+        tap(data => { this.store.dispatch(new LoadProducts(data.data))
+      }),
         catchError(this.handleError)
       );
   }

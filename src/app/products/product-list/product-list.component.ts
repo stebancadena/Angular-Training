@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Subscription } from "rxjs";
+import { Select } from "@ngxs/store";
+import { Observable, Subscription } from "rxjs";
 import { ApiService } from "src/app/core/services/api.service";
 import { CartService } from "src/app/core/services/cart.service";
 import { IProduct } from "../../core/models/product";
@@ -21,6 +22,8 @@ export class ProductListComponent implements OnInit, OnDestroy{
     errorMessage = '';
     sub!: Subscription;
     apiSub!: Subscription;
+
+    @Select(state => state.productsList) products$: Observable<IProduct[]>;
     
     private _listFilter: string = '';
     get listFilter(): string {
@@ -55,7 +58,10 @@ export class ProductListComponent implements OnInit, OnDestroy{
         //     error: err => this.errorMessage = err
         //   });
 
-        this.apiSub = this.apiService.getProducts().subscribe();
+        this.apiSub = this.apiService.getProducts().subscribe(x => {
+            console.log("Entro aca")
+            console.log(JSON.stringify(x.data))
+        });
     }
 
     ngOnDestroy(): void {
