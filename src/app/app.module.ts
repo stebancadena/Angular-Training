@@ -12,7 +12,10 @@ import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { DataService } from './data.service';
 import { HighlightDirective } from './core/directives/highlight.directive';
 import { NgxsModule } from '@ngxs/store';
+import { NgxsReduxDevtoolsPluginModule } from '@ngxs/devtools-plugin';
 import { environment } from 'src/environments/environment';
+import { ProductsState } from './core/state/products/products.state';
+import { CartState } from './core/state/cart/cart.state';
 
 @NgModule({
   declarations: [
@@ -28,7 +31,10 @@ import { environment } from 'src/environments/environment';
     ProductModule,
     CartModule,
     AppRoutingModule,
-    NgxsModule.forRoot()
+    NgxsModule.forRoot([ProductsState, CartState],
+      { developmentMode: !environment.production }
+    ),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   bootstrap: [AppComponent]
 })
