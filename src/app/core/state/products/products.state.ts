@@ -27,7 +27,7 @@ export class ProductsState {
         });
     }
 
-    @Action(AddProduct)
+    @Action(LoadProducts)
     load({ patchState }: StateContext<ProductsStateModel>, { payload }: LoadProducts) {
         patchState({
             productsList: payload

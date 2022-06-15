@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { IProduct } from "../core/models/product";
+import { ApiService } from '../core/services/api.service';
 import { CartService } from '../core/services/cart.service';
 import { ProductService } from '../core/services/product.service';
 
@@ -21,7 +22,8 @@ export class CartComponent implements OnInit {
   errorMessage = '';
 
   constructor(private cartService: CartService,
-              private productService: ProductService) { }
+              private productService: ProductService,
+              private apiService: ApiService) { }
 
   ngOnInit(): void {
     this.cartService.getItems().map( item => {
@@ -31,9 +33,9 @@ export class CartComponent implements OnInit {
     )
   }
 
-  getProduct(id: number): void {
-    this.productService.getProduct(id).subscribe({
-      next: product => this.products.push(product),
+  getProduct(id: string): void {
+    this.apiService.getProduct(id).subscribe({
+      next: product => this.products.push(product.data),
       error: err => this.errorMessage = err
     });
   }

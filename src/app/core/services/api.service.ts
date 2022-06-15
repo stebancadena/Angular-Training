@@ -27,11 +27,9 @@ export class ApiService {
   }
 
   getProduct(id: string): Observable<any> {
-    console.log('url is: ' +this.apiURL+'/'+id)
     return this.http.get(this.apiURL+'/'+id)
       .pipe(
-        tap(res => {console.log(res)
-                    console.log("Enter to the get single api service")}),
+        tap(res => {console.log(res.data)}),
       );
   }
 

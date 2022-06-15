@@ -48,24 +48,15 @@ export class ProductListComponent implements OnInit, OnDestroy{
 
     ngOnInit(): void {
         this.listFilter = this.route.snapshot.queryParamMap.get('filterBy') || '';
-        this.showImage = this.route.snapshot.queryParamMap.get('showImage') === 'true';
-
-        // this.sub = this.productService.getProducts().subscribe({
-        //     next: products => {
-        //       this.products = products;
-        //       this.filteredProducts = this.products;
-        //     },
-        //     error: err => this.errorMessage = err
-        //   });
+        this.showImage = this.route.snapshot.queryParamMap.get('showImage') === 'true'
 
         this.apiSub = this.apiService.getProducts().subscribe(x => {
-            console.log("Entro aca")
-            console.log(JSON.stringify(x.data))
+            this.products = x.data
+            this.filteredProducts = this.products
         });
     }
 
     ngOnDestroy(): void {
-        this.sub.unsubscribe();
         this.apiSub.unsubscribe();
     }
 
@@ -74,6 +65,7 @@ export class ProductListComponent implements OnInit, OnDestroy{
     }
 
     addToCart(product): void {
+        console.log(product)
         this.cartService.addToCart(product,1);
     }
 
