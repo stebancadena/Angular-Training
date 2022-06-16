@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { IProduct } from 'src/app/core/models/product';
+import { ApiService } from 'src/app/core/services/api.service';
 import { ProductService } from 'src/app/core/services/product.service';
 
 @Component({
@@ -10,6 +13,8 @@ import { ProductService } from 'src/app/core/services/product.service';
   styleUrls: ['./product-edit.component.css']
 })
 export class ProductEditComponent implements OnInit {
+  @Select(state => state.productsList.productsList) products$: Observable<IProduct[]>;
+
   pageTitle = 'Product Edit'
   errorMessage?: string;
 
@@ -18,21 +23,25 @@ export class ProductEditComponent implements OnInit {
   product: IProduct;
 
   constructor(private productService: ProductService,
+              private apiService: ApiService,
               private route: ActivatedRoute) { }
 
   ngOnInit(): void {
     
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.getProduct(id);
     }
   }
 
-  getProduct(id: number): void {
-    this.productService.getProduct(id).subscribe({
-      next: product => {if (product) {this.onProductRetrieved(product)}},
+  getProduct(id: any): void {
+    this.products$.subscribe({
+      next: products => {
+        var product = products.find(x => x.productId === id)
+        if (product) {this.onProductRetrieved(product)}
+      },
       error: err => this.errorMessage = err
-    });
+    })
   }
 
   onProductRetrieved(product: IProduct): void {
@@ -52,12 +61,23 @@ export class ProductEditComponent implements OnInit {
       } else {
         this.pageTitle = `Edit Product: ${this.product.productName}`;
         this.editForm = new FormGroup({
+          productId: new FormControl(this.product.productId, [Validators.required]),
           productName: new FormControl(this.product.productName, [Validators.required]),
           productCode: new FormControl(this.product.productCode),
           price: new FormControl(this.product.price),
           description: new FormControl(this.product.description),
+          imageUrl: new FormControl(this.product.imageUrl),
+          releaseDate: new FormControl(this.product.releaseDate),
+          starRating: new FormControl(this.product.starRating),
         })
       }
+
+      this.editForm.patchValue({
+        productName: this.product.productName,
+        productCode: this.product.productCode,
+        starRating: this.product.starRating,
+        description: this.product.description
+      });
     }
   }
 
@@ -67,7 +87,7 @@ export class ProductEditComponent implements OnInit {
         this.onSaveComplete(`${this.product.productName} was deleted`);
       } else {
         if (confirm(`Really delete the product: ${this.product.productName}?`)) {
-          this.productService.deleteProduct(this.product.productId).subscribe({
+          this.apiService.deleteProduct(this.product.productId).subscribe({
             next: () => this.onSaveComplete("Product deleted"),
             error: err => this.errorMessage = err
           });
@@ -84,7 +104,7 @@ export class ProductEditComponent implements OnInit {
           error: err => this.errorMessage = err
         });
       } else {
-        this.productService.updateProduct(this.product).subscribe({
+        this.apiService.updateProduct(this.product).subscribe({
           next: () => this.onSaveComplete(),
           error: err => this.errorMessage = err
         });
@@ -101,11 +121,8 @@ export class ProductEditComponent implements OnInit {
   }
 
   onSubmit(form: FormGroup) {
-    console.log('Valid?', form.valid); // true or false
-    console.log('Name', form.value.productName);
-    console.log('Code', form.value.productCode);
-    console.log('Price', form.value.price);
-    console.log('Description', form.value.description);
+    this.product = this.editForm.value;
+    this.saveProduct()
   }
 
 }

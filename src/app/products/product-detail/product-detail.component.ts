@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
 import { CartService } from 'src/app/core/services/cart.service';
 import { IProduct } from '../../core/models/product';
 import { ProductService } from '../../core/services/product.service';
@@ -10,6 +12,8 @@ import { ProductService } from '../../core/services/product.service';
   styleUrls: ['./product-detail.component.css']
 })
 export class ProductDetailComponent implements OnInit {
+  @Select(state => state.productsList.productsList) products$: Observable<IProduct[]>;
+
   pageTitle: string = "Product Detail";
   errorMessage = '';
   product: IProduct | undefined;
@@ -20,17 +24,20 @@ export class ProductDetailComponent implements OnInit {
               private cartService: CartService) { }
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
+    const id = this.route.snapshot.paramMap.get('id');
     if (id) {
       this.getProduct(id);
     }
   }
 
-  getProduct(id: number): void {
-    this.productService.getProduct(id).subscribe({
-      next: product => this.product = product,
+  getProduct(id: any): void {
+    this.products$.subscribe({
+      next: products => {
+        var product = products.find(x => x.productId === id)
+        if (product) {this.product = product}
+      },
       error: err => this.errorMessage = err
-    });
+    })
   }
 
   addToCart(product): void {
