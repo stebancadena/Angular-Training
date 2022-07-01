@@ -1,9 +1,11 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
-import { Select } from "@ngxs/store";
+import { Select, Store } from "@ngxs/store";
 import { Observable, Subscription } from "rxjs";
+import { cartItem } from "src/app/core/models/cartItem";
 import { ApiService } from "src/app/core/services/api.service";
 import { CartService } from "src/app/core/services/cart.service";
+import { AddProductToCart } from "src/app/core/state/cart/cart.actions";
 import { IProduct } from "../../core/models/product";
 import { ProductService } from "../../core/services/product.service";
 
@@ -37,7 +39,8 @@ export class ProductListComponent implements OnInit, OnDestroy{
     constructor(private productService: ProductService,
                 private route: ActivatedRoute,
                 private cartService: CartService,
-                private apiService: ApiService){}
+                private apiService: ApiService,
+                private store: Store){}
 
     filteredProducts: IProduct[] = [];
     products: IProduct[] = [];
@@ -65,8 +68,11 @@ export class ProductListComponent implements OnInit, OnDestroy{
     }
 
     addToCart(product): void {
-        console.log(product)
-        this.cartService.addToCart(product,1);
+        var item: cartItem = {
+            product: product,
+            qty: 1
+        } 
+        this.store.dispatch(new AddProductToCart(item))
     }
 
     performFilter(filterBy: string): IProduct[] {

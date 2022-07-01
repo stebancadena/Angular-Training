@@ -5,7 +5,7 @@ import { CartStateModel } from './cart.model';
 @State({
     name: 'cart',
     defaults: {
-        cart: [1,2,3]
+        cart: []
     }
 })
 export class CartState {
@@ -25,7 +25,7 @@ export class CartState {
   @Action(RemoveProductToCart)
   remove({ getState, patchState }: StateContext<CartStateModel>, { payload }: RemoveProductToCart) {
     patchState({
-        cart: getState().cart.filter(cart => cart.id !== payload)
+        cart: getState().cart.filter(cart => cart.product !== payload.product)
     });
   }
 }

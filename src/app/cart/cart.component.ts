@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Select } from '@ngxs/store';
+import { Observable } from 'rxjs';
+import { cartItem } from '../core/models/cartItem';
 import { IProduct } from "../core/models/product";
 import { ApiService } from '../core/services/api.service';
 import { CartService } from '../core/services/cart.service';
@@ -13,7 +16,10 @@ export class CartComponent implements OnInit {
   pageTitle:string = 'Cart';
 
   products: IProduct[] = [];
-  quantities: number[] = [];
+  quantities: number[] = []; 
+
+  @Select(state => state.cart.cart) cart$: Observable<cartItem[]>;
+  cart: cartItem[] = [];
   
   imageWidth: number = 50;
   imageMargin: number = 2;
@@ -26,11 +32,13 @@ export class CartComponent implements OnInit {
               private apiService: ApiService) { }
 
   ngOnInit(): void {
-    this.cartService.getItems().map( item => {
-        this.getProduct(item[0])
-        this.quantities.push(item[1])
-      }
-    )
+    this.cart$.subscribe({
+      next: cartItems => {
+        this.cart = cartItems
+        console.log(this.cart)
+      },
+      error: err => this.errorMessage = err
+    })
   }
 
   getProduct(id: string): void {
@@ -44,11 +52,11 @@ export class CartComponent implements OnInit {
     this.showImage = !this.showImage;
   }
 
-  onAdd(index: number): void {
+  onAdd(index: number  = 1): void {
     this.quantities[index] += 1;
   }
 
-  onSubstract(index: number): void {
+  onSubstract(index: number = 1): void {
     let onMinus = this.quantities[index] - 1;
     if(onMinus === 0){
       this.onDelete(index)      

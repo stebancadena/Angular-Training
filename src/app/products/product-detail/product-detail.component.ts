@@ -1,8 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Select } from '@ngxs/store';
+import { Select, Store } from '@ngxs/store';
 import { Observable } from 'rxjs';
+import { cartItem } from 'src/app/core/models/cartItem';
 import { CartService } from 'src/app/core/services/cart.service';
+import { AddProductToCart } from 'src/app/core/state/cart/cart.actions';
 import { IProduct } from '../../core/models/product';
 import { ProductService } from '../../core/services/product.service';
 
@@ -19,6 +21,7 @@ export class ProductDetailComponent implements OnInit {
   product: IProduct | undefined;
 
   constructor(private route: ActivatedRoute,
+              private store: Store,
               private router: Router,
               private productService: ProductService,
               private cartService: CartService) { }
@@ -41,6 +44,10 @@ export class ProductDetailComponent implements OnInit {
   }
 
   addToCart(product): void {
-    this.cartService.addToCart(product,1);
+    var item: cartItem = {
+      product: product,
+      qty: 1
+  } 
+  this.store.dispatch(new AddProductToCart(item))
   }
 }

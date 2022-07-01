@@ -20,39 +20,39 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let product of products; let i = index">
+                    <tr *ngFor="let item of cart">
                         <td>
                             <img *ngIf="showImage"
-                                [src]="product.imageUrl"
-                                [title]="product.productName"
+                                [src]="item.product.imageUrl"
+                                [title]="item.product.productName"
                                 [style.width.px]="imageWidth" 
                                 [style.margin.px]="imageMargin"
                             >
                         </td>
                         <td>
-                            <a [routerLink]="['/products', product.productId]">
-                               {{ product.productName }}
+                            <a [routerLink]="['/products', item.product.productId]">
+                               {{ item.product.productName }}
                             </a>
                         </td>
-                        <td>{{quantities[i]}}</td>
-                        <td>{{product.price | currency:'USD':'symbol':'1.2-2'}}</td>
-                        <td pmHighlight>{{quantities[i] * product.price | currency:'USD':'symbol':'1.2-2'}}</td>
+                        <td>{{item.qty}}</td>
+                        <td>{{item.product.price | currency:'USD':'symbol':'1.2-2'}}</td>
+                        <td pmHighlight>{{item.qty * item.product.price | currency:'USD':'symbol':'1.2-2'}}</td>
                         
                         <td>
                             <button class="btn btn-outline-primary btn-sm"
-                                    (click)="onSubstract(i)">
+                                    (click)="onSubstract()">
                               -
                             </button>
                         </td>
                         <td>
                             <button class="btn btn-outline-primary btn-sm"
-                                    (click)="onAdd(i)">
+                                    (click)="onAdd()">
                               +
                             </button>
                         </td>
                         <td>
                             <button class="btn btn-outline-primary btn-sm"
-                                    (click)="onAdd(i)">
+                                    (click)="onAdd()">
                               Delete
                             </button>
                         </td>

@@ -1,3 +1,5 @@
+import { cartItem } from "../../models/cartItem";
+
 export interface CartStateModel{
-    cart: any[];
+    cart: cartItem[];
 }
