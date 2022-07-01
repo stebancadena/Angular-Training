@@ -35,7 +35,6 @@ export class CartComponent implements OnInit {
     this.cart$.subscribe({
       next: cartItems => {
         this.cart = cartItems
-        console.log(this.cart)
       },
       error: err => this.errorMessage = err
     })
